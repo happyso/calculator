@@ -23,7 +23,7 @@ const handleClick = (e) => {
 //연산자버튼과 숫자를비교해야한다
 // 숫자일 경우 input에 숫자가 입력되게
 //연산을 쌓아서 한꺼번에 보여줄필요없이쌓인 숫자를 그때그때 연산해서 replace.
-//
+//테스트 주석
 
 numbers.forEach((item) => {
     item.addEventListener('click',handleClick);
