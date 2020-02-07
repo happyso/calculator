@@ -1,23 +1,45 @@
 const numbers = document.querySelectorAll('button');
 const jsOutput = document.querySelector('#js-output');
 
+let firstValue = null;
+let operator = null;
+let secondValue = null;
+
 const handleClick = (e) => {
     const key = e.target;
     const action = key.dataset.action;
     const keyContent = key.textContent;
     const displayedNum = jsOutput.textContent;
+    const calculater = action === 'add' || action === 'subtract' || action === 'multiply' || action === 'divide';
 
-    if (!action) {
+    if (calculater) {
+        firstValue = displayedNum;
+        operator = action;
+
+        if (firstValue && operator) {
+            secondValue = jsOutput.textContent;
+            jsOutput.textContent = calculate(firstValue, operator, secondValue)
+        }
+
+    } else {
+        addValue(action, keyContent, displayedNum);
+    }
+    //jsOutput.textContent = calculate(firstValue, operator, secondValue)
+};
+
+const addValue = (action, keyContent, displayedNum) => {
+    if (jsOutput.textContent === '0' ) {
+        jsOutput.textContent = keyContent;
+    } else if (!action) {
         jsOutput.textContent = displayedNum + keyContent;
     }
-
-    if (action === 'add') {
-        console.log('add!');
+    if (action === 'decimal') {
+        jsOutput.textContent = displayedNum + '.';
     }
+};
 
-    if (action === 'add') {
-        console.log('add!');
-    }
+const calculate = (firstValue, operator, secondValue) => {
+
 };
 
 //연산자버튼과 숫자를비교해야한다
