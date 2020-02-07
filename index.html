@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>something</title>
+    <style>
+        body {
+            position: relative;
+            padding:0;
+            margin:0;
+            height: 100vh;
+        }
+        .wrapContent a{
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .output{line-height: 32px;
+            border:1px solid #ddd;
+            background-color: #fff;
+            color:#000;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapCalculator">
+        <div class="js-input">
+            <p id="js-output" class="output"></p>
+        </div>
+        <div class="wrapContent">
+            <button class="key--operator" data-action="add">+</button>
+            <button class="key--operator" data-action="subtract">-</button>
+            <button class="key--operator" data-action="multiply">&times;</button>
+            <button class="key--operator" data-action="divide">÷</button>
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>0</button>
+            <button data-action="decimal">.</button>
+            <button data-action="clear">AC</button>
+        </div>
+    </div>
+
+    <script src="calculator.js"></script>
+</body>
+</html>
