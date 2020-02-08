@@ -1,45 +1,59 @@
 const numbers = document.querySelectorAll('button');
 const jsOutput = document.querySelector('#js-output');
+const calculator = document.querySelector('#calculator');
 
-let firstValue = null;
-let operator = null;
-let secondValue = null;
 
-const handleClick = (e) => {
-    const key = e.target;
+const handleClick = (event) => {
+    const key = event.target;
     const action = key.dataset.action;
     const keyContent = key.textContent;
     const displayedNum = jsOutput.textContent;
-    const calculater = action === 'add' || action === 'subtract' || action === 'multiply' || action === 'divide';
+    const previousKeyType = calculator.dataset.previousKeyType;
 
-    if (calculater) {
-        firstValue = displayedNum;
-        operator = action;
-
-        if (firstValue && operator) {
-            secondValue = jsOutput.textContent;
-            jsOutput.textContent = calculate(firstValue, operator, secondValue)
+    if (!action){
+        if (jsOutput.textContent === '0' || previousKeyType === "operator") {
+            jsOutput.textContent = keyContent;
+            calculator.dataset.previousKeyType = "";
+        } else {
+            jsOutput.textContent = displayedNum + keyContent;
         }
-
-    } else {
-        addValue(action, keyContent, displayedNum);
-    }
-    //jsOutput.textContent = calculate(firstValue, operator, secondValue)
-};
-
-const addValue = (action, keyContent, displayedNum) => {
-    if (jsOutput.textContent === '0' ) {
-        jsOutput.textContent = keyContent;
-    } else if (!action) {
-        jsOutput.textContent = displayedNum + keyContent;
     }
     if (action === 'decimal') {
         jsOutput.textContent = displayedNum + '.';
     }
+
+    if (action === 'add' || action === 'subtract' || action === 'multiply' || action === 'divide') {
+
+
+        const firstValue = calculator.dataset.firstValue;
+        const operator = calculator.dataset.operator;
+        const secondValue = displayedNum;
+
+        if (firstValue && operator) {
+            jsOutput.textContent = calculate(firstValue, operator, secondValue);
+        }
+
+        calculator.dataset.firstValue = displayedNum;
+        calculator.dataset.operator = action;
+        calculator.dataset.previousKeyType = "operator";
+    }
+
+    //숫자외에 연산자 버튼을 누르면 현재 입력된 숫자와 연산자가 저장됨
+    //그다음에 숫자를 누르고 연산자를 누르면 전 연산자 결과가 노출됨
+
 };
 
-const calculate = (firstValue, operator, secondValue) => {
 
+const calculate = (firstValue, operator, secondValue) => {
+    if (operator === 'add') {
+        return parseInt(firstValue) + parseInt(secondValue);
+    } else if (operator === 'subtract'){
+        return parseInt(firstValue) - parseInt(secondValue);
+    }else if (operator === 'multiply'){
+        return parseInt(firstValue) * parseInt(secondValue);
+    }else if (operator === 'divide'){
+        return parseInt(firstValue) / parseInt(secondValue);
+    }
 };
 
 //연산자버튼과 숫자를비교해야한다
