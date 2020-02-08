@@ -13,29 +13,56 @@ const handleClick = (event) => {
     if (!action){
         if (jsOutput.textContent === '0' || previousKeyType === "operator") {
             jsOutput.textContent = keyContent;
-            calculator.dataset.previousKeyType = "";
         } else {
             jsOutput.textContent = displayedNum + keyContent;
         }
+        calculator.dataset.previousKeyType = "number";
     }
     if (action === 'decimal') {
         jsOutput.textContent = displayedNum + '.';
     }
 
+    if (action === 'clear') {
+        jsOutput.textContent = 0;
+        calculator.dataset.firstValue = '';
+        calculator.dataset.operator = '';
+        calculator.dataset.previousKeyType = '';
+    }
+
     if (action === 'add' || action === 'subtract' || action === 'multiply' || action === 'divide') {
+        const firstValue = calculator.dataset.firstValue;
+        const operator = calculator.dataset.operator;
+        const secondValue = displayedNum;
 
+        //전에설정한 숫자와 연산자가 있어야 계산동작
+        if (previousKeyType === "calculate"){
+            calculator.dataset.firstValue = displayedNum;
 
+        }else if (firstValue && operator && previousKeyType !== "operator"){
+            const calcValue = calculate(firstValue, operator, secondValue);
+            jsOutput.textContent = calcValue;//연산결과를 노출
+            calculator.dataset.firstValue = calcValue;//결과를 다시 first에 할
+        } else {
+            //연산자와 숫자가 없으면
+            calculator.dataset.firstValue = displayedNum;
+            //기존값이 그대로 유지
+        }
+        calculator.dataset.operator = action;
+        calculator.dataset.previousKeyType = "operator";
+    }
+
+    if (action === 'calculate') {
         const firstValue = calculator.dataset.firstValue;
         const operator = calculator.dataset.operator;
         const secondValue = displayedNum;
 
         if (firstValue && operator) {
-            jsOutput.textContent = calculate(firstValue, operator, secondValue);
+            const calcValue = calculate(firstValue, operator, secondValue);
+            jsOutput.textContent = calcValue;
+            calculator.dataset.firstValue = calcValue;
         }
-
-        calculator.dataset.firstValue = displayedNum;
-        calculator.dataset.operator = action;
-        calculator.dataset.previousKeyType = "operator";
+        calculator.dataset.firstValue = jsOutput.textContent;
+        calculator.dataset.previousKeyType = "calculate";
     }
 
     //숫자외에 연산자 버튼을 누르면 현재 입력된 숫자와 연산자가 저장됨
@@ -44,15 +71,15 @@ const handleClick = (event) => {
 };
 
 
-const calculate = (firstValue, operator, secondValue) => {
+const calculate = (first, operator, second) => {
     if (operator === 'add') {
-        return parseInt(firstValue) + parseInt(secondValue);
+        return parseInt(first) + parseInt(second);
     } else if (operator === 'subtract'){
-        return parseInt(firstValue) - parseInt(secondValue);
+        return parseInt(first) - parseInt(second);
     }else if (operator === 'multiply'){
-        return parseInt(firstValue) * parseInt(secondValue);
+        return parseInt(first) * parseInt(second);
     }else if (operator === 'divide'){
-        return parseInt(firstValue) / parseInt(secondValue);
+        return parseInt(first) / parseInt(second);
     }
 };
 
